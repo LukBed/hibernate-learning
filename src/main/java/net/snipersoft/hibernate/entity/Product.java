@@ -10,16 +10,22 @@ public class Product {     //table product
     @Id //on field or getter, in one entity all annotations must be on field or getters
     @GeneratedValue(strategy = GenerationType.IDENTITY) //auto - depends of db
     private Integer id;
+
     private String name;
     private String description;
     private LocalDateTime created;
     private LocalDateTime updated;
     private BigDecimal price;
+
     @Enumerated(EnumType.STRING) //default = ordinal
     private ProductType productType;
+
     @OneToMany(mappedBy = "product") //field name from Review
     //some dbs require cascade = CascadeType.REMOVE
     private List<Review> reviews;
+
+    @OneToOne(fetch = FetchType.LAZY) //default eager
+    private Category category;
 
     public Integer getId() {
         return id;
@@ -83,6 +89,14 @@ public class Product {     //table product
 
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     @Override

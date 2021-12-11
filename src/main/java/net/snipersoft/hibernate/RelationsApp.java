@@ -1,5 +1,6 @@
 package net.snipersoft.hibernate;
 
+import net.snipersoft.hibernate.entity.Category;
 import net.snipersoft.hibernate.entity.Product;
 import net.snipersoft.hibernate.entity.ProductType;
 import net.snipersoft.hibernate.entity.Review;
@@ -22,7 +23,8 @@ public class RelationsApp {
 
 //        readProducts(entityManager);
 //        readReviews(entityManager);
-        deleteProductAndReviews(entityManager);
+//        deleteProductAndReviews(entityManager);
+        readProductWithCategory(entityManager);
 
         entityManager.close();
         sessionFactory.close();
@@ -60,6 +62,16 @@ public class RelationsApp {
         //Postgres supports ON DELETE CASCADE
         Product product = entityManager.find(Product.class, 1);
         entityManager.remove(product);
+
+        entityManager.getTransaction().commit();
+    }
+
+    static void readProductWithCategory(EntityManager entityManager) {
+        entityManager.getTransaction().begin();
+
+        Product product = entityManager.find(Product.class, 3);
+        Category category = product.getCategory();
+        logger.info(category.getDescription());
 
         entityManager.getTransaction().commit();
     }
