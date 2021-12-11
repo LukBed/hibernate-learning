@@ -24,7 +24,9 @@ public class Product {     //table product
     //some dbs require cascade = CascadeType.REMOVE
     private List<Review> reviews;
 
-    @OneToOne(fetch = FetchType.LAZY) //default eager
+//    @OneToOne(fetch = FetchType.LAZY) //default eager
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
     private Category category;
 
     public Integer getId() {

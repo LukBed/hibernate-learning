@@ -13,6 +13,7 @@ import javax.persistence.Persistence;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RelationsApp {
     private static final Logger logger = LogManager.getLogger(RelationsApp.class);
@@ -25,7 +26,7 @@ public class RelationsApp {
 //        readReviews(entityManager);
 //        deleteProductAndReviews(entityManager);
 //        readProductWithCategory(entityManager);
-        readCategoryWithProduct(entityManager);
+        readCategoryWithProducts(entityManager);
 
         entityManager.close();
         sessionFactory.close();
@@ -77,13 +78,13 @@ public class RelationsApp {
         entityManager.getTransaction().commit();
     }
 
-    static void readCategoryWithProduct(EntityManager entityManager) {
+    static void readCategoryWithProducts(EntityManager entityManager) {
         entityManager.getTransaction().begin();
 
         Category category = entityManager.find(Category.class, 1);
-        Product product = category.getProduct();
+        List<Product> products = category.getProducts();
         logger.info(category.getName());
-        logger.info(product.getName());
+        logger.info("Products: " + products.stream().map(Product::getName).collect(Collectors.joining(", ")));
 
         entityManager.getTransaction().commit();
     }
