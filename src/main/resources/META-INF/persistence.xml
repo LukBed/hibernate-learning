@@ -1,5 +1,6 @@
 <persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.2">
     <persistence-unit name="main" transaction-type="RESOURCE_LOCAL">
+        <class>net.snipersoft.hibernate.entity.Product</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
             <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5433/postgres" />
