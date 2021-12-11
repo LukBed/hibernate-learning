@@ -24,7 +24,8 @@ public class RelationsApp {
 //        readProducts(entityManager);
 //        readReviews(entityManager);
 //        deleteProductAndReviews(entityManager);
-        readProductWithCategory(entityManager);
+//        readProductWithCategory(entityManager);
+        readCategoryWithProduct(entityManager);
 
         entityManager.close();
         sessionFactory.close();
@@ -72,6 +73,17 @@ public class RelationsApp {
         Product product = entityManager.find(Product.class, 3);
         Category category = product.getCategory();
         logger.info(category.getDescription());
+
+        entityManager.getTransaction().commit();
+    }
+
+    static void readCategoryWithProduct(EntityManager entityManager) {
+        entityManager.getTransaction().begin();
+
+        Category category = entityManager.find(Category.class, 1);
+        Product product = category.getProduct();
+        logger.info(category.getName());
+        logger.info(product.getName());
 
         entityManager.getTransaction().commit();
     }
