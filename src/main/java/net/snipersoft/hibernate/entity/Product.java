@@ -3,6 +3,7 @@ package net.snipersoft.hibernate.entity;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Product {     //table product
@@ -16,6 +17,9 @@ public class Product {     //table product
     private BigDecimal price;
     @Enumerated(EnumType.STRING) //default = ordinal
     private ProductType productType;
+    @OneToMany //default fetch = lazy
+    @JoinColumn(name = "product_id")
+    private List<Review> reviews; //lazy loading
 
     public Integer getId() {
         return id;
@@ -73,6 +77,14 @@ public class Product {     //table product
         this.productType = productType;
     }
 
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -83,6 +95,7 @@ public class Product {     //table product
                 ", updated=" + updated +
                 ", price=" + price +
                 ", productType=" + productType +
+                ", reviews=" + reviews +
                 '}';
     }
 }
