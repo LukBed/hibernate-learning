@@ -2,6 +2,7 @@ package net.snipersoft.hibernate;
 
 import net.snipersoft.hibernate.entity.Product;
 import net.snipersoft.hibernate.entity.ProductType;
+import net.snipersoft.hibernate.entity.Review;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,14 +20,15 @@ public class RelationsApp {
         EntityManagerFactory sessionFactory = Persistence.createEntityManagerFactory("main"); //thread-safe, per db
         EntityManager entityManager = sessionFactory.createEntityManager(); //JPA session, not thread-safe
 
-        readList(entityManager);
-
+//        readProducts(entityManager);
+//        readReviews(entityManager);
+        deleteProductAndReviews(entityManager);
 
         entityManager.close();
         sessionFactory.close();
     }
 
-    static void readList(EntityManager entityManager) {
+    static void readProducts(EntityManager entityManager) {
         entityManager.getTransaction().begin();
 
         List<Product> result = entityManager.createQuery("SELECT p FROM Product p").getResultList();
@@ -36,6 +38,28 @@ public class RelationsApp {
             //select reviews
             logger.info(p.getReviews());
         });
+
+        entityManager.getTransaction().commit();
+    }
+
+    static void readReviews(EntityManager entityManager) {
+        entityManager.getTransaction().begin();
+
+        List<Review> result = entityManager.createQuery("SELECT r FROM Review r").getResultList();
+        result.forEach(r -> {
+            logger.info(r.getContent());
+            logger.info(r.getProduct().getName());
+        });
+
+        entityManager.getTransaction().commit();
+    }
+
+    static void deleteProductAndReviews(EntityManager entityManager) {
+        entityManager.getTransaction().begin();
+
+        //Postgres supports ON DELETE CASCADE
+        Product product = entityManager.find(Product.class, 1);
+        entityManager.remove(product);
 
         entityManager.getTransaction().commit();
     }

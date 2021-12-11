@@ -1,10 +1,7 @@
 package net.snipersoft.hibernate.entity;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Review {
@@ -13,6 +10,9 @@ public class Review {
     private Integer id;
     private String content;
     private int rating;
+    @ManyToOne(fetch = FetchType.LAZY) //default fetch = eager
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     public Integer getId() {
         return id;
@@ -38,12 +38,20 @@ public class Review {
         this.rating = rating;
     }
 
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
     @Override
     public String toString() {
         return "Review{" +
                 "id=" + id +
                 ", content='" + content + '\'' +
-                ", rating=" + rating +
+                ", rating=" + rating + //no product - cycle dependency!
                 '}';
     }
 }

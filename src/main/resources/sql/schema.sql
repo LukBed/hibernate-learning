@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS review (
     CONSTRAINT fk_review_product
     FOREIGN KEY (product_id)
     REFERENCES product (id)
-    ON DELETE CASCADE
+    ON DELETE CASCADE --delete product -> delete reviews also
     ON UPDATE CASCADE
 );
 

@@ -17,9 +17,9 @@ public class Product {     //table product
     private BigDecimal price;
     @Enumerated(EnumType.STRING) //default = ordinal
     private ProductType productType;
-    @OneToMany //default fetch = lazy
-    @JoinColumn(name = "product_id")
-    private List<Review> reviews; //lazy loading
+    @OneToMany(mappedBy = "product") //field name from Review
+    //some dbs require cascade = CascadeType.REMOVE
+    private List<Review> reviews;
 
     public Integer getId() {
         return id;
@@ -95,7 +95,7 @@ public class Product {     //table product
                 ", updated=" + updated +
                 ", price=" + price +
                 ", productType=" + productType +
-                ", reviews=" + reviews +
+//                ", reviews=" + reviews + //generate select
                 '}';
     }
 }
